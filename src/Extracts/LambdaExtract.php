@@ -10,13 +10,13 @@ use TextAnalysis\Filters\LambdaFilter;
  */
 class LambdaExtract extends LambdaFilter implements IExtractStrategy
 {
-        
+
     /**
-     * 
+     *
      * @param string $token
      * @return false|string
      */
-    public function filter($token) 
+    public function filter(string $token) 
     {
         return $this->transform($token);
     }

@@ -11,11 +11,11 @@ use TextAnalysis\Interfaces\IExtractStrategy;
 class UrlExtract implements IExtractStrategy
 {
     /**
-     * 
+     *
      * @param string $token
      * @return mixed
      */
-    public function filter($token) 
+    public function filter(string $token) 
     {
         return filter_var($token, FILTER_VALIDATE_URL);
     }

@@ -14,18 +14,18 @@ class HashTag implements IExtractStrategy
      * @var int
      */
     protected $minLength = 3;
-        
-    public function __construct(int $minLength = 3) 
+
+    public function __construct(int $minLength = 3)
     {
         $this->minLength = $minLength;
     }
-    
+
     /**
-     * 
+     *
      * @param string $token
      * @return false|string
      */
-    public function filter($token) 
+    public function filter(string $token) 
     {
         // don't count the hash tag sign -1
         if($token[0] === '#' && strlen($token)-1 >= $this->getMinLength()) {
@@ -33,7 +33,7 @@ class HashTag implements IExtractStrategy
         }
         return false;
     }
-    
+
     public function getMinLength() : int
     {
         return $this->minLength;

@@ -10,14 +10,14 @@ use TextAnalysis\Interfaces\IExtractStrategy;
  */
 class EmailExtract implements IExtractStrategy
 {
-    
+
     /**
-     * 
+     *
      * @param string $token
      * @todo  make it work on non-latin email address
      * @return mixed Returns false or an email address
      */
-    public function filter($token)
+    public function filter(string $token)
     {
         return filter_var($token, FILTER_VALIDATE_EMAIL);
     }
