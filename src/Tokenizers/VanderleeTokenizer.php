@@ -5,7 +5,7 @@ namespace TextAnalysis\Tokenizers;
 use Sentence;
 
 /**
- * A wrapper around the sentence tokenizer written by 
+ * A wrapper around the sentence tokenizer written by
  * vanderlee/php-sentence
  * @author yooper
  */
@@ -16,8 +16,8 @@ class VanderleeTokenizer extends TokenizerAbstract
      * @var Sentence
      */
     protected $sentence = null;
-    
-    public function __construct() 
+
+    public function __construct()
     {
         $this->sentence = new Sentence;
     }
@@ -27,12 +27,12 @@ class VanderleeTokenizer extends TokenizerAbstract
      * @param string $string
      * @return array
      */
-    public function tokenize($string): array 
+    public function tokenize(string $string): array 
     {
         return filter_empty( $this->sentence->split($string));
     }
-    
-    public function __destruct() 
+
+    public function __destruct()
     {
         unset($this->sentence);
     }

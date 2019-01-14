@@ -10,7 +10,7 @@ namespace TextAnalysis\Tokenizers;
  */
 class LambdaTokenizer extends TokenizerAbstract
 {
-    
+
     /**
      *
      * @var function
@@ -18,16 +18,16 @@ class LambdaTokenizer extends TokenizerAbstract
     protected $lambdaFunc = null;
 
     /**
-     * 
+     *
      * @param function $lambdaFunc
      */
-    public function __construct($lambdaFunc) 
+    public function __construct($lambdaFunc)
     {
         $this->lambdaFunc = $lambdaFunc;
     }
-    
-    
-    public function tokenize($string) 
+
+
+    public function tokenize(string $string) 
     {
         return call_user_func($this->lambdaFunc, $string);
     }

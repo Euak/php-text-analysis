@@ -26,7 +26,7 @@ class PennTreeBankTokenizer
      * Calls internal functions to handle data processing
      * @param string $str
      */
-    public function tokenize($str)
+    public function tokenize(string $str)
     {
         return preg_split('/[\pZ\pC]+/u', $this->execute($str), null, PREG_SPLIT_NO_EMPTY);
     }
@@ -34,7 +34,7 @@ class PennTreeBankTokenizer
      * Handles the data processing
      * @param string $string The raw text to get parsed
      */
-    protected function execute($string)
+    protected function execute(string $string)
     {
         foreach ($this->patternsAndReplacements as $patternAndReplacement) {
             $tmp = preg_replace("/".$patternAndReplacement->pattern."/s", $patternAndReplacement->replacement, $string);
@@ -44,7 +44,7 @@ class PennTreeBankTokenizer
                 $string = $tmp;
             }
         }
-        
+
         return $string;
     }
 
@@ -95,7 +95,7 @@ class PennTreeBankTokenizer
      * @param string $pattern
      * @param string $replacement
      */
-    protected function addPatternAndReplacement($pattern, $replacement)
+    protected function addPatternAndReplacement(string $pattern, string $replacement)
     {
         $instance = new \stdClass();
         $instance->pattern = $pattern;
@@ -104,4 +104,3 @@ class PennTreeBankTokenizer
     }
 
 }
-

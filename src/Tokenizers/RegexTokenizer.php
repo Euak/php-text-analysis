@@ -5,34 +5,34 @@ namespace TextAnalysis\Tokenizers;
  *
  * @author yooper
  */
-class RegexTokenizer extends TokenizerAbstract 
+class RegexTokenizer extends TokenizerAbstract
 {
     const DEFAULT_REGEX = '/\w+|\$[\d\.]+|\S+/';
-    
+
     protected $pattern = null;
     protected $flags = 0;
     protected $offset = 0;
-    
-    public function __construct($pattern = self::DEFAULT_REGEX, $flags = 0, $offset = 0)
+
+    public function __construct(string $pattern = self::DEFAULT_REGEX, int $flags = 0, int $offset = 0)
     {
         $this->pattern = $pattern;
         $this->flags = $flags;
         $this->offset = $offset;
     }
-    
+
     /**
      * Wraps preg_match_all
      * @param string $string
-     * @return array 
+     * @return array
      */
-    public function tokenize($string)
+    public function tokenize(string $string)
     {
         $matches = array();
         $count = preg_match_all($this->pattern, $string, $matches, $this->flags, $this->offset);
-        if($count === false) { 
+        if($count === false) {
             return array();
         }
         return $matches[0];
-        
+
     }
 }
