@@ -12,38 +12,38 @@ use TextAnalysis\Filters\LowerCaseFilter;
 
 /**
  * A stop word generator will generate a list of stop words based on the settings
- * given by the developer. 
+ * given by the developer.
  * @author dcardin
  */
 class StopwordGenerator
 {
     const MODE_FREQ = 1;
-    
+
     /**
      *
      * @var string[] Array of file paths of documents to be scanned
      */
     protected $filePaths = [];
-    
+
     protected $mode = 1;
-    
+
     /**
      *
      * @var array
      */
     protected $stopWords = [];
-    
+
     /**
-     * 
+     *
      * @param array $filePaths
      * @param int $mode
      */
-    public function __construct(array $filePaths, $mode = self::MODE_FREQ) 
+    public function __construct(array $filePaths, int $mode = self::MODE_FREQ)
     {
         $this->filePaths = $filePaths;
         $this->mode = (int)$mode;
     }
-    
+
     /**
      * Returns the array of file paths
      * @return string[]
@@ -52,7 +52,7 @@ class StopwordGenerator
     {
         return $this->filePaths;
     }
-    
+
     /**
      * Returns an array of stop words and their frequencies
      * @return string[]
@@ -62,7 +62,7 @@ class StopwordGenerator
         if(!empty($this->stopWords)) {
             return $this->stopWords;
         }
-                
+
         foreach($this->getFilePaths() as $filePath)
         {
             $content = $this->getFileContent($filePath);
@@ -72,16 +72,16 @@ class StopwordGenerator
                 ->applyTransformation(new PossessiveNounFilter())
                 ->applyTransformation(new PunctuationFilter())
                 ->applyTransformation(new CharFilter());
-            
+
             if($this->mode === self::MODE_FREQ) {
                 $this->computeUsingFreqDist($doc->getDocumentData());
             }
-            
+
         }
         arsort($this->stopWords);
-        return $this->stopWords;                        
+        return $this->stopWords;
     }
-    
+
     /**
      * Adds frequency counts to the stopWords property
      * @param array $tokens
@@ -90,7 +90,7 @@ class StopwordGenerator
     {
         $freqDist = (new FreqDist($tokens))
             ->getKeyValuesByFrequency();
-                
+
         foreach($freqDist as $token => $freqValue)
         {
             if(!isset($this->stopWords[$token])) {
@@ -98,24 +98,24 @@ class StopwordGenerator
             } else {
                 $this->stopWords[$token] += $freqValue;
             }
-        }        
+        }
     }
-    
+
     /**
      * Returns the text content from the file
      * @param string $filePath
      * @return string
      */
-    protected function getFileContent($filePath)
+    protected function getFileContent(string $filePath)
     {
         return file_get_contents($filePath);
     }
-    
-    public function __destruct() 
+
+    public function __destruct()
     {
         unset($this->filePaths);
         unset($this->mode);
         unset($this->stopWords);
-    }    
+    }
 
 }
