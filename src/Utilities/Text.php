@@ -15,7 +15,7 @@ class Text
      * @param string $needle
      * @return boolean
      */
-    static public function startsWith($haystack, $needle)
+    static public function startsWith(string $haystack, string $needle)
     {
         return !strncmp($haystack, $needle, strlen($needle));
     }
@@ -25,12 +25,12 @@ class Text
      * @param string $needle
      * @return boolean
      */
-    static public function endsWith($haystack, $needle)
+    static public function endsWith(string $haystack, string $needle)
     {
         return strpos($haystack, $needle) === (strlen($haystack) - strlen($needle));
     }
 
-    static public function contains($haystack, $needle)
+    static public function contains(string $haystack, string $needle)
     {
         return (strpos($haystack, $needle) !== false);
     }
@@ -41,7 +41,7 @@ class Text
      * @param string $text
      * @return array
      */
-    static public function getAllSubStrings($text)
+    static public function getAllSubStrings(string $text)
     {
         $splitText = str_split($text);
         $splitCount = count($splitText);
@@ -67,7 +67,7 @@ class Text
      * @param string  find_date( ' some text 01/01/2012 some text' ) or find_date( ' some text October 5th 86 some text' )
      * @return mixed  false if no date found else array: array( 'day' => 01, 'month' => 01, 'year' => 2012 )
      */
-    static public function findDate( $string ) {
+    static public function findDate( string $string ) {
       $shortenize = function( $string ) {
         return substr( $string, 0, 3 );
       };
@@ -242,7 +242,7 @@ class Text
     * @param int $contextLength
     * @return string
     */
-    static function getExcerpt(String $text, int $needlePosition, int $needleLength, int $contextLength) : string
+    static function getExcerpt(string $text, int $needlePosition, int $needleLength, int $contextLength) : string
     {
         $left = max($needlePosition - $contextLength, 0);
         $bufferLength = $needleLength + (2 * $contextLength);

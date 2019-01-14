@@ -6,21 +6,21 @@ namespace TextAnalysis\Utilities\Nltk\Download;
  * Tracks download packages from nltk data repo
  * @author yooper
  */
-class Package 
+class Package
 {
 
     /**
      * @var string
      */
-    protected $checksum;    
-    protected $id;    
-    protected $name;    
-    protected $subdir;            
-    protected $unzip;        
-    protected $url;  
-          
+    protected $checksum;
+    protected $id;
+    protected $name;
+    protected $subdir;
+    protected $unzip;
+    protected $url;
+
     /**
-     * 
+     *
      * @param string $id
      * @param string $checksum
      * @param string $name
@@ -28,7 +28,7 @@ class Package
      * @param string $unzip
      * @param string $url
      */
-    public function __construct($id, $checksum, $name, $subdir, $unzip, $url) 
+    public function __construct(string $id, string $checksum, string $name, string $subdir, string $unzip, string $url) 
     {
         $this->id = $id;
         $this->checksum = $checksum;
@@ -37,37 +37,37 @@ class Package
         $this->unzip = $unzip;
         $this->url = $url;
     }
-    
+
     public function getName()
     {
         return $this->name;
     }
-    
+
     public function getChecksum()
     {
         return $this->checksum;
     }
-    
+
     public function getId()
     {
         return $this->id;
     }
-    
+
     public function getSubdir()
     {
         return $this->subdir;
     }
-    
+
     public function getUnzip()
     {
         return $this->unzip;
     }
-    
+
     public function getUrl()
     {
         return $this->url;
-    }   
-    
+    }
+
     /**
      * Returns the path the package should be installed into
      * @return string
