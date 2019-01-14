@@ -9,15 +9,14 @@ use TextAnalysis\Interfaces\ITokenTransformation;
  */
 class LowerCaseFilter implements ITokenTransformation
 {
-    
+
     /**
      * Lower case the word and return it
      * @param string $word
-     * @return string 
+     * @return string
      */
-    public function transform($word)
+    public function transform(string $word)
     {
         return mb_strtolower($word);
     }
 }
-

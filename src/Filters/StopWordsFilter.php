@@ -8,13 +8,13 @@ use TextAnalysis\Interfaces\ITokenTransformation;
  * @author yooper (yooper)
  */
 class StopWordsFilter implements ITokenTransformation
-{    
+{
     /**
      * An array of stop words
-     * @var array 
+     * @var array
      */
     protected $stopWords = null;
-    
+
 
     /**
      * Make sure to normalize your stop words before using this filter
@@ -24,19 +24,19 @@ class StopWordsFilter implements ITokenTransformation
     {
         $this->stopWords = array_fill_keys($stopWords, true);
     }
-    
+
     /**
      * Check if the stop word is in the list
-     * @param string $token 
+     * @param string $token
      */
-    public function transform($token)
+    public function transform(string $token)
     {
         if(isset($this->stopWords[$token])) {
             return null;
         }
         return $token;
     }
-    
+
     /**
      * release the stop words
      */

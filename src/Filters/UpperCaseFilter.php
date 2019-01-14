@@ -9,15 +9,14 @@ use TextAnalysis\Interfaces\ITokenTransformation;
  */
 class UpperCaseFilter implements ITokenTransformation
 {
-    
+
     /**
      * Upper case the word and return it
      * @param string $word
-     * @return string 
+     * @return string
      */
-    public function transform($word)
+    public function transform(string $word)
     {
         return mb_strtoupper($word);
     }
 }
-

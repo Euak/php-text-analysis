@@ -15,11 +15,11 @@ class PossessiveNounFilter implements ITokenTransformation
     /**
      * remove the possive nouns
      * @param string $word
-     * @return string 
+     * @return string
      */
-    public function transform($word)
+    public function transform(string $word)
     {
         return preg_replace("/\'s/", "", $word);
     }
-   
+
 }

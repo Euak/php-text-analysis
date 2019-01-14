@@ -11,11 +11,11 @@ use TextAnalysis\Interfaces\ITokenTransformation;
 class NumbersFilter implements ITokenTransformation
 {
     /**
-     * 
+     *
      * @param string $word
      * @return string
      */
-    public function transform($word) 
+    public function transform(string $word) 
     {
         return trim(preg_replace('/\d+/u', '', $word));
     }

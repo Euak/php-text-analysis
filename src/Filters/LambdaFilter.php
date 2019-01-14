@@ -16,20 +16,20 @@ class LambdaFilter implements ITokenTransformation
     protected $lambdaFunc = null;
 
     /**
-     * 
+     *
      * @param function $lambdaFunc
      */
-    public function __construct($lambdaFunc) 
+    public function __construct($lambdaFunc)
     {
         $this->lambdaFunc = $lambdaFunc;
     }
-    
+
     /**
      * Run the lambda function on the word token
      * @param string $word
      * @return string|null
      */
-    public function transform($word)
+    public function transform(string $word)
     {
         return call_user_func($this->lambdaFunc, $word);
     }
