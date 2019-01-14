@@ -11,42 +11,41 @@ class JsonWriterAdapter implements IDataWriter
 {
     /**
      * Internal data structure
-     * @var array 
+     * @var array
      */
     protected $data = array();
-    
+
     /**
      *
      * @var int
      */
     protected $options = 0;
-    
+
     /**
      *
-     * @var int 
+     * @var int
      */
     protected $depth = 512;
-    
+
     /**
      *
      * @param array $data
      * @param int $options
-     * @param int $depth 
+     * @param int $depth
      */
-    public function __construct(array &$data, $options = 0, $depth = 512)
+    public function __construct(array &$data, int $options = 0, int $depth = 512)
     {
         $this->data = $data;
         $this->options = $options;
         $this->depth = $depth;
     }
-    
+
     /**
      * return a json encoded string
-     * @return string 
+     * @return string
      */
     public function write()
     {
         return json_encode($this->data, $this->options, $this->depth);
     }
 }
-

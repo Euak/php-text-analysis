@@ -9,32 +9,32 @@ class JsonDataAdapter implements IDataReader
 {
     /**
      * Json encoded string
-     * @var string 
+     * @var string
      */
     protected $jsonStr;
-    
+
     /**
      *
-     * @var boolean 
+     * @var boolean
      */
     protected $assoc = true;
-    
+
     /**
      *
      * @param string $jsonStr
-     * @param boolean $assoc 
+     * @param boolean $assoc
      */
-    public function __construct($jsonStr, $assoc = true)
+    public function __construct(string $jsonStr, boolean $assoc = true)
     {
         $this->jsonStr = $jsonStr;
         $this->assoc = $assoc;
     }
-    
+
     /**
      * Returns the json data as an array
-     * @return array 
+     * @return array
      */
-    public function read() 
+    public function read()
     {
         return json_decode($this->jsonStr, $this->assoc);
     }

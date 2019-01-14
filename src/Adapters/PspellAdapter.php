@@ -11,18 +11,18 @@ use TextAnalysis\Interfaces\ISpelling;
 class PspellAdapter implements ISpelling
 {
     protected $pSpell = null;
-    
-    public function __construct($language = 'en', $spelling = "", $jargon = "", $encoding = "", $mode = PSPELL_BAD_SPELLERS )
+
+    public function __construct(string $language = 'en', string $spelling = "", string $jargon = "", string $encoding = "", $mode = PSPELL_BAD_SPELLERS )
     {
-        $this->pSpell = pspell_new($language, $spelling, $jargon, $encoding, $mode);        
+        $this->pSpell = pspell_new($language, $spelling, $jargon, $encoding, $mode);
     }
-        
+
     /**
      * Use pspell to get word suggestions
      * @param string $word
      * @return array
      */
-    public function suggest($word) 
+    public function suggest(string $word)
     {
         if (!pspell_check($this->pSpell, $word)) {
             return pspell_suggest($this->pSpell, $word);
@@ -31,8 +31,8 @@ class PspellAdapter implements ISpelling
             return [$word];
         }
     }
-    
-    public function __destruct() 
+
+    public function __destruct()
     {
         unset($this->pSpell);
     }
