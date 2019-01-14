@@ -17,7 +17,7 @@ class SimilarTextComparison implements ISimilarity, IDistance
      * @param string $text2
      * @return type
      */
-    public function distance($text1, $text2) 
+    public function distance(string $text1, string $text2)
     {
         return strlen($text2) - $this->similarity($text1, $text2);
     }
@@ -28,7 +28,7 @@ class SimilarTextComparison implements ISimilarity, IDistance
      * @param string $text2
      * @return int
      */
-    public function similarity($text1, $text2) 
+    public function similarity(string $text1, string $text2) 
     {
         return similar_text($text1, $text2);
     }

@@ -13,34 +13,34 @@ use TextAnalysis\Utilities\Text;
 class LongestCommonSubstringComparison implements ISimilarity, IDistance
 {
     /**
-     * Using caching to improve performance on text2 inputs 
+     * Using caching to improve performance on text2 inputs
      * @var boolean
      */
     protected $useCache = false;
-    
+
     /**
      * Cache for holding substring arrays key/value array
      * @var array
      */
     protected $cache = [];
-    
+
     /**
-     * 
+     *
      * @param boolean $useCache
      */
-    public function __construct($useCache = false) 
+    public function __construct(boolean $useCache = false)
     {
         $this->useCache = $useCache;
     }
-    
+
     /**
      * Returns the string length of the longest common substring (LCS)
      * @param string $text1
      * @param string $text2
      * @return int
      */
-    public function distance($text1, $text2) 
-    {        
+    public function distance(string $text1, string $text2)
+    {
         return max(mb_strlen($text1), mb_strlen($text2)) - mb_strlen($this->similarity($text1, $text2));
     }
 
@@ -50,12 +50,12 @@ class LongestCommonSubstringComparison implements ISimilarity, IDistance
      * @param string $text2
      * @return string
      */
-    public function similarity($text1, $text2) 
+    public function similarity(string $text1, string $text2) 
     {
         if($this->useCache && !isset($this->cache[$text2])) {
             $this->cache[$text2] = Text::getAllSubStrings($text2);
         }
-        
+
         $intersection = array_intersect( Text::getAllSubStrings($text1), ($this->useCache) ? $this->cache[$text2] : Text::getAllSubStrings($text2));
         $max = 0;
         $lcs = '';
@@ -69,17 +69,17 @@ class LongestCommonSubstringComparison implements ISimilarity, IDistance
         }
         return $lcs;
     }
-    
+
     /**
-     * 
+     *
      * @return array
      */
     public function getCache()
     {
         return $this->cache;
     }
-    
-    public function __destruct() 
+
+    public function __destruct()
     {
         unset($this->cache);
         unset($this->useCache);

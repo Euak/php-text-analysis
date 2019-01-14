@@ -15,24 +15,24 @@ class JaroWinklerComparison implements ISimilarity
      * @var int
      */
     protected $minPrefixLength;
-    
-    public function __construct($minPrefixLength = 4)
+
+    public function __construct(int $minPrefixLength = 4)
     {
         $this->minPrefixLength = $minPrefixLength;
     }
-    
+
     /**
      * Return the similarity using the JaroWinkler algorithm
      * @param string $text1
      * @param string $text2
      * @return real
      */
-    public function similarity($text1, $text2)
+    public function similarity(string $text1, string $text2)
     {
         if($text1 === $text2) {
             return 1.0;
         }
-        
+
         // ensure that s1 is shorter than or same length as s2
         if (strlen($text1) > strlen($text2)) {
             $tmp = $text1;
@@ -42,27 +42,27 @@ class JaroWinklerComparison implements ISimilarity
 
         $strLen1 = strlen($text1);
         $strLen2 = strlen($text2);
-        
+
         $maxDistance = (int)$strLen2 / 2;
         $commonCounter = 0; // count of common characters
         $transpositionCounter = 0; // count of transpositions
         $prevPosition = -1;
-        for ($index = 0; $index < $strLen1; $index++) 
+        for ($index = 0; $index < $strLen1; $index++)
         {
             $char = $text1[$index];
-            // init inner loop 
+            // init inner loop
             $jindex = max(0, $index - $maxDistance);
             while($jindex < min($strLen2, $index + $maxDistance))
             {
                 if ($char === $text2[$jindex]) {
                     $commonCounter++; // common char found
                     if ($prevPosition != -1 && $jindex < $prevPosition) {
-                        $transpositionCounter++; 
+                        $transpositionCounter++;
                     }
                   $prevPosition = $jindex;
                   break;
                 }
-                
+
                 $jindex++;
             }
         }
@@ -70,7 +70,7 @@ class JaroWinklerComparison implements ISimilarity
         if($commonCounter === 0) {
             return 0.0;
         }
-        
+
         // first compute the score
         $score = (
                 ($commonCounter / $strLen1) +
@@ -79,13 +79,13 @@ class JaroWinklerComparison implements ISimilarity
 
         //init values
         $prefixLength = 0; // length of prefix
-        $last = min($this->minPrefixLength, $strLen1);        
+        $last = min($this->minPrefixLength, $strLen1);
         while($prefixLength < $last && $text1[$prefixLength] == $text2[$prefixLength])
         {
             $prefixLength++;
         }
-        
-        return $score + (($prefixLength * (1 - $score)) / 10);     
-    }    
+
+        return $score + (($prefixLength * (1 - $score)) / 10);
+    }
 
 }

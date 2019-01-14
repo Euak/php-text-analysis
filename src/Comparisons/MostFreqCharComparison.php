@@ -17,30 +17,30 @@ class MostFreqCharComparison implements ISimilarity, IDistance
      * @var int
      */
     protected $limit;
-    
+
     /**
      * Set the minimum limit
      * @param int $limit
      */
-    public function __construct($limit = 2) 
+    public function __construct(int $limit = 2)
     {
         $this->limit = $limit;
     }
-    
-    
+
+
     /**
      * Returns the most frequently used letter with the same
-     * frequency 
+     * frequency
      * @param string $text1
      * @param string $text2
      * @return int
      */
-    public function similarity($text1, $text2)
+    public function similarity(string $text1, string $text2)
     {
         $similarity = 0;
         $hash1 = $this->hashString($text1);
-        $hash2 = $this->hashString($text2);        
-        
+        $hash2 = $this->hashString($text2);
+
         $keys = array_keys(array_intersect_key($hash1, $hash2));
         foreach($keys as $key)
         {
@@ -48,12 +48,12 @@ class MostFreqCharComparison implements ISimilarity, IDistance
             {
                 $similarity += $hash1[$key];
             }
-        }        
+        }
         return $similarity;
     }
-    
-    
-    
+
+
+
     /**
      * Returns a sorted hashed array with the frequency counts per character
      * @param string $text
@@ -62,7 +62,7 @@ class MostFreqCharComparison implements ISimilarity, IDistance
     {
         $charList = str_split($text);
         $chars = array_fill_keys( $charList, 0);
-        foreach($charList as $char) { 
+        foreach($charList as $char) {
             $chars[$char]++;
         }
         return $chars;
