@@ -14,7 +14,7 @@ use TextAnalysis\Downloaders\NltkCorporaIndexDownloader;
 
 
 /**
- * Installs the selected nltk corpus package 
+ * Installs the selected nltk corpus package
  *
  * @author yooper
  */
@@ -24,7 +24,7 @@ class NltkPackageInstallCommand extends Command
     * @var ProgressBar
     */
     protected $progressBar = null;
-    
+
     /**
      * @var \Symfony\Component\Console\Output\OutputInterface
      */
@@ -38,31 +38,31 @@ class NltkPackageInstallCommand extends Command
                 'package',
                 InputArgument::REQUIRED,
                 'You must selected a valid package id, use pta:list to explore the available options.'
-            );               
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
-    {        
+    {
         $this->output = $output;
         $packageId = $input->getArgument('package');
-        
+
         $listPackages = (new NltkCorporaIndexDownloader())->getPackages();
 
         $packageFound = null;
-        
-        foreach($listPackages as $package) 
-        { 
+
+        foreach($listPackages as $package)
+        {
             if($packageId == $package->getId()) {
                 $packageFound = $package;
                 break;
             }
         }
-        
-        if(!$packageFound) { 
+
+        if(!$packageFound) {
             $output->writeln("Package {$packageId} was not found, try textconsole pta:list, to see the available packages");
         } else {
-            
-            $download = DPF::download($package);  
+
+            $download = DPF::download($package);
             // Create stream context.
             $context = stream_context_create([], ['notification' => [$this, 'progress']]);
 
@@ -74,7 +74,7 @@ class NltkPackageInstallCommand extends Command
             }
 
             stream_copy_to_stream($resource, $stream);
-            
+
             if (!fclose($stream)) {
                 $output->writeln("Could not save file {$download->getDownloadFullPath()}");
             }
@@ -84,12 +84,12 @@ class NltkPackageInstallCommand extends Command
 
             if(!$download->verifyChecksum()) {
                 $output->writeln("Bad checksum for the downloaded package {$packageFound->getId()}");
-                exit;        
+                exit;
             }
             $download->unpackPackage();
             $output->writeln(PHP_EOL);
             $output->writeln("Package {$package->getId()} - {$package->getName()} was installed into {$download->getInstallDir()}");
-        }        
+        }
     }
 
     /**
@@ -100,7 +100,7 @@ class NltkPackageInstallCommand extends Command
      * @param int $bytesTransferred
      * @param int $bytesMax
      */
-    public function progress($notificationCode, $severity, $message, $messageCode, $bytesTransferred, $bytesMax)
+    public function progress(int $notificationCode, int $severity, string $message, int $messageCode, int $bytesTransferred, int $bytesMax)
     {
         if (STREAM_NOTIFY_REDIRECTED === $notificationCode) {
             $this->progressBar->clear();
