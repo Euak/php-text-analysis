@@ -4,7 +4,7 @@ namespace Tests\TextAnalysis\Comparisons\Phonetics;
 use TextAnalysis\Interfaces\ITokenTransformation;
 
 /**
- * Wrapper for PHP's native soundex 
+ * Wrapper for PHP's native soundex
  * @author yooper
  */
 class SoundexPhonetic implements ITokenTransformation
@@ -14,7 +14,7 @@ class SoundexPhonetic implements ITokenTransformation
      * @param string $token
      * @return string
      */
-    public function transform($token)
+    public function transform(string $token)
     {
         return soundex($token);
     }

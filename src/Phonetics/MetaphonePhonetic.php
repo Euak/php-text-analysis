@@ -15,7 +15,7 @@ class MetaphonePhonetic implements ITokenTransformation
      * @param string $token
      * @return string
      */
-    public function transform($token)
+    public function transform(string $token)
     {
         return metaphone($token);
     }
