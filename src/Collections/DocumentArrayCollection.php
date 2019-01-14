@@ -16,16 +16,16 @@ class DocumentArrayCollection implements ICollection
      */
     protected $documents; // The documents container
 
-    
+
     /**
-     * When looped through this is the current document 
+     * When looped through this is the current document
      * @var DocumentAbstract
      */
     protected $currentDocument = null;
 
     /**
      * An array of DocumentAbstract objects
-     * @param array $documents 
+     * @param array $documents
      */
     public function __construct(array $documents)
     {
@@ -38,24 +38,24 @@ class DocumentArrayCollection implements ICollection
         unset($this->documents);
         unset($this->currentDocument);
     }
-    
+
     /**
-     * @param array $transformations An array of 
+     * @param array $transformations An array of
      * Apply the collection of token transformers to the documents
      */
     public function applyTransformations(array $transformations)
     {
         /** @var DocumentAbstract $document **/
-        foreach($this->documents as $document) 
-        { 
+        foreach($this->documents as $document)
+        {
             /** @var ITokenTransformation $transformation **/
             foreach($transformations as $transformation)
             {
                 $document->applyTransformation($transformation);
             }
-        }        
+        }
     }
-    
+
     /**
      * @param array $stemmers An array of stemmers
      * Apply the collection of stem transformers to the documents
@@ -63,18 +63,18 @@ class DocumentArrayCollection implements ICollection
     public function applyStemmers(array $stemmers)
     {
         /** @var DocumentAbstract $document **/
-        foreach($this->documents as $document) 
-        { 
+        foreach($this->documents as $document)
+        {
             /** @var ITokenTransformation $transformation **/
             foreach($stemmers as $stemmer)
             {
                 $document->applyStemmer($stemmer);
             }
-        }        
-    }   
-    
+        }
+    }
+
     /**
-     * Apply extract to the document to pull out all the points of 
+     * Apply extract to the document to pull out all the points of
      * interest
      * @param IExtractStrategy $extract
      * @return array
@@ -89,20 +89,20 @@ class DocumentArrayCollection implements ICollection
         }
         return $found;
     }
-    
+
 
     public function rewind()
     {
         reset($this->documents);
         $this->currentDocument = current($this->documents);
     }
-    
-    
+
+
     public function next()
     {
         $this->currentDocument = next($this->documents);
     }
-    
+
     /**
      *
      * @return boolean
@@ -111,7 +111,7 @@ class DocumentArrayCollection implements ICollection
     {
         return $this->currentDocument === null;
     }
-    
+
     /**
      *
      * @return DocumentAbstract
@@ -125,51 +125,51 @@ class DocumentArrayCollection implements ICollection
      *
      * @param mixed $key
      * @param DocumentAbstract $value
-     * @return boolean 
+     * @return boolean
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, DocumentAbstract $value)
     {
-        if(!isset($key)) { 
+        if(!isset($key)) {
             $this->documents[] = $value;
             return true;
         }
-        
+
         $this->documents[$key] = $value;
         return $value;
-         
-        
+
+
     }
-    
+
     /**
      *
      * @param mixed $key
-     * @return null 
+     * @return null
      */
     public function offsetUnset($key)
     {
         if (isset($this->documents[$key])) {
             $deleted = $this->documents[$key];
             unset($this->documents[$key]);
-             
+
              return $deleted;
          }
           return null;
     }
-    
+
     /**
      *
      * @param mixed $key
-     * @return DocumentAbstract 
+     * @return DocumentAbstract
      */
     public function offsetGet($key)
     {
         return $this->documents[$key];
     }
-    
+
     /**
      *
      * @param mixed $key
-     * @return boolean 
+     * @return boolean
      */
     public function offsetExists($key)
     {
@@ -187,11 +187,11 @@ class DocumentArrayCollection implements ICollection
 
     /**
      *
-     * @return \ArrayIterator 
+     * @return \ArrayIterator
      */
     public function getIterator()
     {
         return new \ArrayIterator($this->documents);
     }
-        
+
 }
