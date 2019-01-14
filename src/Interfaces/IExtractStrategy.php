@@ -6,11 +6,11 @@ namespace TextAnalysis\Interfaces;
  *
  * @author yooper
  */
-interface IExtractStrategy 
+interface IExtractStrategy
 {
     /**
      * Returns false or the token
      * @param string $token
      */
-    public function filter($token);
+    public function filter(string $token);
 }
