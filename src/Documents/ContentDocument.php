@@ -7,46 +7,46 @@ namespace TextAnalysis\Documents;
  * parsing/tokenizing the string is performed afterwards
  * @author yooper
  */
-class ContentDocument 
+class ContentDocument
 {
     static protected $counter = 0;
-    
+
     /**
      *
      * @var mixed
      */
-    protected $id = null; 
-    
+    protected $id = null;
+
     /**
      *
      * @var string
      */
     protected $content = null;
-    
+
     /**
-     * 
+     *
      * @param string $content
      * @param mixed $id uses a counter if empty
      */
-    public function __construct($content, $id = null) 
+    public function __construct(string $content, $id = null) 
     {
-        if(!$id) { 
+        if(!$id) {
             $this->id = ++self::$counter;
         }
         $this->content = $content;
     }
-    
+
     /**
-     * 
+     *
      * @return int|string
      */
     public function getId()
     {
         return $this->id;
     }
-    
+
     /**
-     * 
+     *
      * @return string
      */
     public function getContent()
