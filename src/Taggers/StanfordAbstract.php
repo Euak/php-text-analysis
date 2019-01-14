@@ -11,86 +11,86 @@ use TextAnalysis\Tokenizers\WhitespaceTokenizer;
  * Abstract class for the Stanford NerTagger and PosTagger to extend
  * @author yooper
  */
-abstract class StanfordAbstract 
+abstract class StanfordAbstract
 {
     /**
      *
      * @var array options passed the java vm
      */
     protected $javaOptions = [];
-    
+
     /**
      *
-     * @var string Path to the classifier you want to use 
+     * @var string Path to the classifier you want to use
      */
     protected $classifierPath = null;
-    
+
     /**
      * Path to the stanford NER jar
      * @var string
      */
     protected $jarPath = null;
-   
+
     /**
-     * Place for storing the tokenized words to 
+     * Place for storing the tokenized words to
      * @var string
      */
     protected $tmpFilePath = null;
-        
+
     /**
      * The separators between tokens
      * @var string
      */
     protected $separator = null;
-    
+
     /**
      *
      * @var string Output from proc_open
      */
     protected $output;
-    
+
     /**
      *
      * @var string Errors from proc_open
      */
     protected $errors;
-    
-    
+
+
     /**
-     * 
+     *
      * @param string $jarPath
      * @param string $classifierPath
      * @param string $javaOptions
      */
-    public function __construct($jarPath, $classifierPath, $javaOptions = ['-mx700m'], $separator = '/') 
+    public function __construct(string $jarPath, string $classifierPath, $javaOptions = ['-mx700m'], $separator = '/')
     {
         $this->jarPath = $jarPath;
         $this->classifierPath = $classifierPath;
         $this->javaOptions = $javaOptions;
         $this->separator = $separator;
     }
-    
+
     /**
-     * 
+     *
      * @return string
      */
     public function getTmpFilePath()
     {
         return $this->tmpFilePath;
     }
-    
+
     /**
      * @throws \RuntimeException
      * @param array $tokens Use a tokenizer
      */
     public function tag(array $tokens)
-    {  
-        $this->verify();           
+    {
+        $this->verify();
         //write tokens to temp file
-        file_put_contents($this->getTmpFilePath(), implode($this->getSeparator(), $tokens));                        
+        file_put_contents($this->getTmpFilePath(), implode($this->getSeparator(), $tokens));
         $this->exec();
-               
-        return $this->getParsedOutput();        
+
+        return $this->getParsedOutput();
     }
 
     /**
@@ -98,8 +98,8 @@ abstract class StanfordAbstract
      * @return array
      */
     abstract protected function getParsedOutput();
-    
-    
+
+
     /**
      * Separator used between tokens
      * @return string default is /
@@ -108,22 +108,22 @@ abstract class StanfordAbstract
     {
         return $this->separator;
     }
-    
+
     /**
      * verifies required files exist
      * @throws \RuntimeException
      */
     protected function verify()
     {
-        if(!is_file($this->getJarPath())) { 
+        if(!is_file($this->getJarPath())) {
             throw new RuntimeException("Jar not found {$this->getJarPath()}");
         }
-        
-        if(!is_file($this->getClassifierPath())) { 
+
+        if(!is_file($this->getClassifierPath())) {
             throw new RuntimeException("Classifier not found {$this->getClassifierPath()}");
-        }        
+        }
     }
-    
+
     /**
      * Returns the path to the classifier
      * @return string
@@ -132,7 +132,7 @@ abstract class StanfordAbstract
     {
         return $this->classifierPath;
     }
-    
+
     /**
      * Returns the path to the ner jar
      * @return string
@@ -141,18 +141,18 @@ abstract class StanfordAbstract
     {
         return $this->jarPath;
     }
-    
+
     /**
-     * 
+     *
      * @return array
      */
     public function getJavaOptions()
     {
         return $this->javaOptions;
     }
-    
+
     /**
-     * 
+     *
      * @return string
      */
     public function getPathToJava()
@@ -163,12 +163,12 @@ abstract class StanfordAbstract
             throw new RuntimeException('env JAVA_HOME must be set.');
         }
     }
-    
+
     /**
      * @return string Returns the cli that is passed to proc_open
      */
     abstract public function getCommand();
-    
+
     /**
      * @return string Return based on the OS used
      */
@@ -180,7 +180,7 @@ abstract class StanfordAbstract
             return ':';
         }
     }
-    
+
     /**
      * Calls the stanford jar file
      * @throws RuntimeException
@@ -192,7 +192,7 @@ abstract class StanfordAbstract
            1 => ["pipe", "w"],  // stdout is a pipe that the child will write to
            2 => ["pipe", "w"] // stderr is a file to write to
         ];
-        
+
         $process = proc_open($this->getCommand(), $descriptors, $pipes, dirname($this->getJarPath()), []);
 
         if (is_resource($process)) {
@@ -200,14 +200,14 @@ abstract class StanfordAbstract
             $this->output = stream_get_contents($pipes[1]);
             $this->errors = stream_get_contents($pipes[2]);
             fclose($pipes[2]);
-            fclose($pipes[1]);                       
+            fclose($pipes[1]);
             if(proc_close($process) === -1) {
                 throw new RuntimeException($this->errors);
             }
-        }            
+        }
     }
 
-    public function __destruct() 
+    public function __destruct()
     {
         unset($this->classifierPath);
         unset($this->errors);
