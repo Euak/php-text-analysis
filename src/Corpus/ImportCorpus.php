@@ -12,14 +12,14 @@ use TextAnalysis\Tokenizers\LambdaTokenizer;
  * Provides the main access point into the nltk corpora
  * @author dcardin
  */
-class ImportCorpus 
-{   
+class ImportCorpus
+{
     /**
      *
      * @var Package The selected package
      */
     protected $package;
-    
+
     /**
      * Returns an array of files that were installed into the packages directory
      * @return array
@@ -28,15 +28,15 @@ class ImportCorpus
     {
         $installationPath = $this->getPackage()->getInstallationPath();
         // use array values to start the indexing of the array @ zero
-        return array_values(array_diff(scandir($installationPath), array('..', '.')));        
+        return array_values(array_diff(scandir($installationPath), array('..', '.')));
     }
-    
+
     /**
      * The id of the package to load
      * @var string
      */
     protected $packageId;
-    
+
     /**
      * Return an array of tokenized words
      * @param string|null $fileId
@@ -45,16 +45,16 @@ class ImportCorpus
      */
     public function getWords($fileId = null, $tokenizer = null)
     {
-        if(!$tokenizer) { 
+        if(!$tokenizer) {
             $tokenizer = new GeneralTokenizer();
         }
         $fileIds = [];
-        if(empty($fileId)) { 
+        if(empty($fileId)) {
             $fileIds = $this->getFileIds();
         } else {
             $fileIds = [$fileId];
         }
-        
+
         $words = [];
         foreach($fileIds as $filename )
         {
@@ -69,12 +69,12 @@ class ImportCorpus
      * Return an array of tokenized sentences, see getWords
      * @param string|null $fileId
      * @return array
-     */    
+     */
     public function getSentences($fileId = null)
     {
         return $this->getWords($fileId, new SentenceTokenizer());
     }
-    
+
     /**
      * Each array element is the text of the selected file loaded file, see getWords
      * @param  $fileId
@@ -83,24 +83,24 @@ class ImportCorpus
     public function getRaw($fileId = null)
     {
         // does nothing with the text
-        $lamdaFunction = function($text){ 
+        $lamdaFunction = function($text){
             return [$text];
-        };        
-        return $this->getWords($fileId, new LambdaTokenizer($lamdaFunction));        
+        };
+        return $this->getWords($fileId, new LambdaTokenizer($lamdaFunction));
     }
-    
-    
+
+
     /**
      * Provide the package id
      * @param string $packageId
      */
-    public function __construct($packageId) 
+    public function __construct(string $packageId) 
     {
         $this->packageId = $packageId;
     }
-        
+
     /**
-     * 
+     *
      * @return Package
      */
     public function getPackage()
@@ -113,8 +113,8 @@ class ImportCorpus
                 return ($package->getId() == $packageId);
             });
 
-            $this->package = array_values($filteredPackages)[0];                   
-        }        
+            $this->package = array_values($filteredPackages)[0];
+        }
         return $this->package;
     }
 }
