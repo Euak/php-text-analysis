@@ -12,7 +12,7 @@ if (! function_exists('bigrams')) {
 	 *
 	 * @return array
 	 */
-	function bigrams( array $tokens, $separator = ' ' ) {
+	function bigrams( array $tokens, string $separator = ' ' ) {
 		return \TextAnalysis\NGrams\NGramFactory::create( $tokens, 2, $separator );
 	}
 }
@@ -25,8 +25,7 @@ if (! function_exists('trigrams')) {
 	 *
 	 * @return array
 	 */
-	function trigrams( array $tokens, $separator = ' ' ) {
+	function trigrams( array $tokens, string $separator = ' ' ) {
 		return \TextAnalysis\NGrams\NGramFactory::create( $tokens, 3, $separator );
 	}
 }
-

@@ -12,10 +12,9 @@ if (! function_exists('print_array')) {
 	 * @param string $prefix
 	 * @param string $newline
 	 */
-	function print_array( array $strings, $prefix = '* ', $newline = PHP_EOL ) {
+	function print_array( array $strings, string $prefix = '* ', string $newline = PHP_EOL ) {
 		array_walk( $strings, function ( $string ) use ( $newline, $prefix ) {
 			echo $prefix . $string . $newline;
 		} );
 	}
 }
-
