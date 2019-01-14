@@ -12,7 +12,7 @@ use TextAnalysis\Utilities\Vowels\VowelsAbstractFactory;
 class LancasterStemmer implements IStemmer
 {
     /**
-     * Constants used to make accessing the indexed array easier 
+     * Constants used to make accessing the indexed array easier
      */
     const ENDING_STRING = 'ending_string';
     const LOOKUP_CHAR = 'lookup_char';
@@ -20,75 +20,75 @@ class LancasterStemmer implements IStemmer
     const REMOVE_TOTAL = 'remove_total';
     const APPEND_STRING = 'append_string';
     const CONTINUE_FLAG = 'continue_flag';
-    
+
     /**
     * Keep a copy of the original token
-    * @var string 
+    * @var string
     */
     protected $originalToken = null;
-        
+
     /**
      * The indexed rule set provided
      * @var array
      */
     protected $indexedRules = array();
-    
+
     /**
      * Used to check for vowels
-     * @var VowelAbstractFactory 
+     * @var VowelAbstractFactory
      */
     protected $vowelChecker = null;
-    
+
     /**
      * Constructor loads the ruleset into memory
-     * @param array $ruleSet the set of rules that will be used by the lancaster algorithm. if empty 
+     * @param array $ruleSet the set of rules that will be used by the lancaster algorithm. if empty
      * this will use the default ruleset embedded in the LancasterStemmer
      */
-    public function __construct($ruleSet = array())
+    public function __construct(array $ruleSet = array())
     {
         //setup the default rule set
-        if(empty($ruleSet)) { 
+        if(empty($ruleSet)) {
             $ruleSet = LancasterStemmer::getDefaultRuleSet();
         }
-            
-        $this->indexRules($ruleSet);  
+
+        $this->indexRules($ruleSet);
         //only get the english vowel checker
         $this->vowelChecker = VowelsAbstractFactory::factory("English");
     }
-    
-    
-    
+
+
+
     /**
      * Creates an chained hashtable using the lookup char as the key
-     * @param array $rules 
+     * @param array $rules
      */
     protected function indexRules(array $rules)
-    {        
+    {
         $this->indexedRules = array();
-        
+
         foreach($rules as $rule){
             if(isset($this->indexedRules[$rule[self::LOOKUP_CHAR]])){
                 $this->indexedRules[$rule[self::LOOKUP_CHAR]][] = $rule;
             } else {
                 $this->indexedRules[$rule[self::LOOKUP_CHAR]] = array($rule);
             }
-        }       
+        }
     }
-    
+
     /**
      * Performs a Lancaster stem on the giving word
      * @param string $word The word that gets stemmed
      * @return string|null The stemmed word
      */
-    public function stem($word)
+    public function stem(string $word)
     {
-        if(empty(trim($word))) { 
+        if(empty(trim($word))) {
             return null;
         }
-        
+
         $this->originalToken = $word;
-        
-        //only iterate out loop if a rule is applied        
+
+        //only iterate out loop if a rule is applied
         do {
             $ruleApplied = false;
             $lookupChar = $word[strlen($word)-1];
@@ -99,20 +99,20 @@ class LancasterStemmer implements IStemmer
             }
             foreach($this->indexedRules[$lookupChar] as $rule)
             {
-                if(strrpos($word, substr($rule[self::ENDING_STRING],-1)) === 
+                if(strrpos($word, substr($rule[self::ENDING_STRING],-1)) ===
                         (strlen($word)-strlen($rule[self::ENDING_STRING]))){
 
-                    
-                    if(!empty($rule[self::INTACT_FLAG])){ 
-                        
-                        if($this->originalToken == $word && 
+
+                    if(!empty($rule[self::INTACT_FLAG])){
+
+                        if($this->originalToken == $word &&
                             $this->isAcceptable($word, (int)$rule[self::REMOVE_TOTAL])){
 
                             $word = $this->applyRule($word, $rule);
                             $ruleApplied = true;
                             if($rule[self::CONTINUE_FLAG] === '.'){
                                 return $word;
-                            } 
+                            }
                             break;
                         }
                     } elseif($this->isAcceptable($word, (int)$rule[self::REMOVE_TOTAL])){
@@ -128,42 +128,42 @@ class LancasterStemmer implements IStemmer
                 }
             }
         } while($ruleApplied);
-        
+
         return $word;
-                        
+
     }
-    
+
     /**
-     * Apply the lancaster rule and return the altered string. 
+     * Apply the lancaster rule and return the altered string.
      * @param string $word word the rule is being applied on
      * @param array $rule An associative array containing all the data elements for applying to the word
      */
-    protected function applyRule($word, $rule)
+    protected function applyRule(string $word, array $rule)
     {
-        return substr_replace($word, $rule[self::APPEND_STRING], strlen($word) - $rule[self::REMOVE_TOTAL]);        
+        return substr_replace($word, $rule[self::APPEND_STRING], strlen($word) - $rule[self::REMOVE_TOTAL]);
     }
-    
+
     /**
      * Check if a word is acceptable
      * @param string $word The word under test
      * @param int $removeTotal The number of characters to remove from the suffix
      * @return boolean True is the word is acceptable
      */
-    protected function isAcceptable($word, $removeTotal)
+    protected function isAcceptable(string $word, int $removeTotal)
     {
         $length =  strlen($word) - $removeTotal;
         if($this->vowelChecker->isVowel($word, 0)&& $length >= 2){
             return true;
-        } elseif($length >= 3 && 
+        } elseif($length >= 3 &&
                 ($this->vowelChecker->isVowel($word, 1) || $this->vowelChecker->isVowel($word, 2))) {
             return true;
         }
         return false;
     }
-    
+
     /**
      * Contains an array with the default lancaster rules
-     * @return array 
+     * @return array
      */
     static public function getDefaultRuleSet()
     {
@@ -972,8 +972,8 @@ class LancasterStemmer implements IStemmer
                 "intact_flag"=> "",
                 "remove_total"=> "1",
                 "append_string"=> "s",
-                "continue_flag"=> ".")            
+                "continue_flag"=> ".")
         );
     }
-        
+
 }

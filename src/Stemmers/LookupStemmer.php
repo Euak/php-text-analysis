@@ -10,21 +10,21 @@ class LookupStemmer implements IStemmer
 {
     /**
      * A dictionary for looking up stemmed words
-     * @var array 
+     * @var array
      */
     protected $dictionary = array();
-    
+
     public function __construct(IDataReader $reader)
     {
         $this->dictionary = $reader->read();
     }
-    
+
     /**
      * Returns a token's stemmed root
      * @param string $token
-     * @return string 
+     * @return string
      */
-    public function stem($token) 
+    public function stem(string $token) 
     {
         if(array_key_exists($token, $this->dictionary)){
             return $this->dictionary[$token];

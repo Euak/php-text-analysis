@@ -17,18 +17,18 @@ class PorterStemmer implements IStemmer
      * @var Porter
      */
     protected $porterStemmer = null;
-    
-    public function __construct() 
+
+    public function __construct()
     {
         $this->porterStemmer = new Porter();
     }
-    
+
     /**
-     * 
+     *
      * @param string $token
      * @return string
      */
-    public function stem($token) 
+    public function stem(string $token) 
     {
         return $this->porterStemmer->Stem($token);
     }

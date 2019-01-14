@@ -17,7 +17,7 @@ class LambdaStemmer extends LambdaFilter implements IStemmer
      * @param string $token
      * @return string
      */
-    public function stem($token) 
+    public function stem(string $token) 
     {
         return $this->transform($token);
     }
